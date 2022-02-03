@@ -1,11 +1,18 @@
 import { Root } from 'postcss'
-import * as postcss from 'postcss'
 
-export default postcss.plugin('trim', () => (css: Root) => {
-  css.walk(({ type, raws }) => {
-    if (type === 'rule' || type === 'atrule') {
-      if (raws.before) raws.before = '\n'
-      if (raws.after) raws.after = '\n'
+const postcssPluginTrim = () => {
+  return {
+    postcssPlugin: 'trim',
+    Once(root: Root) {
+      root.walk(({ type, raws }) => {
+        if (type === 'rule' || type === 'atrule') {
+          if (raws.before) raws.before = '\n'
+          if (raws.after) raws.after = '\n'
+        }
+      })
     }
-  })
-})
+  }
+}
+postcssPluginTrim.postcss = true
+
+export default postcssPluginTrim
